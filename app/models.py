@@ -3,13 +3,15 @@ from flask_serialize import FlaskSerializeMixin
 
 db = SQLAlchemy()
 
+FlaskSerializeMixin.db = db
+
 
 class Question(db.Model, FlaskSerializeMixin):
     id = db.Column(db.Integer, primary_key=True)
     wording = db.Column(db.Text, nullable=False)
-    code = db.Column(db.Text,
-                     nullable=False,
-                     unique=True)
+    code = db.Column(db.Text, nullable=False, unique=True)
+
+    create_fields = update_fields = ['wording', 'code']
 
     def __repr__(self):
         return f'<Question {self.wording}'
@@ -18,8 +20,7 @@ class Question(db.Model, FlaskSerializeMixin):
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text, nullable=False)
-    question_id = db.Column(db.Integer,
-                            db.ForeignKey('question.id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question',
                                backref=db.backref('items'),
                                lazy=True)
