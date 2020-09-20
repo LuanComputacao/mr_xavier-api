@@ -10,6 +10,8 @@ class Question(db.Model, FlaskSerializeMixin):
     id = db.Column(db.Integer, primary_key=True)
     wording = db.Column(db.Text, nullable=False)
     code = db.Column(db.Text, nullable=False, unique=True)
+    created_at = db.Column(db.DateTime, onupdate=db.func.now(), server_default=db.func.now(), default=db.func.now())
+    updated_at = db.Column(db.DateTime, server_default=db.func.now(), default=db.func.now())
 
     create_fields = update_fields = ['wording', 'code']
 
@@ -24,6 +26,8 @@ class Item(db.Model, FlaskSerializeMixin):
     question = db.relationship('Question',
                                backref=db.backref('items'),
                                lazy=True)
+    created_at = db.Column(db.DateTime, onupdate=db.func.now(), server_default=db.func.now(), default=db.func.now())
+    updated_at = db.Column(db.DateTime, server_default=db.func.now(), default=db.func.now())
 
     create_fields = update_fields = ['text', 'question_id']
 
@@ -47,6 +51,8 @@ class Quiz(db.Model, FlaskSerializeMixin):
         lazy='subquery',
         secondary=quiz_questions
     )
+    created_at = db.Column(db.DateTime, onupdate=db.func.now(), server_default=db.func.now(), default=db.func.now())
+    updated_at = db.Column(db.DateTime, server_default=db.func.now(), default=db.func.now())
 
     def __repr__(self):
         return f'<Quiz: {self.title}> '
