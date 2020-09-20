@@ -2,6 +2,7 @@ from flask import Flask
 from environs import Env
 import os
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 from app.views import home, questions, items
 
@@ -16,8 +17,8 @@ db_file_uri = f'sqlite:///{db_path}'
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = db_file_uri
-
 
     from app.models import db
     migrate = Migrate(app, db)

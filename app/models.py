@@ -10,7 +10,7 @@ class Question(db.Model, FlaskSerializeMixin):
     id = db.Column(db.Integer, primary_key=True)
     wording = db.Column(db.Text, nullable=False)
     code = db.Column(db.Text, nullable=False, unique=True)
-    type = db.Column(db.Integer, nullable=False, server_default='1', default=1)
+    answer_type = db.Column(db.Integer, nullable=False, server_default='1', default='1')
     created_at = db.Column(db.DateTime, onupdate=db.func.now(), server_default=db.func.now(), default=db.func.now())
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), default=db.func.now())
 
