@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_serialize import FlaskSerializeMixin
+from app.models_enums import QuestionTypesEnum
 
 db = SQLAlchemy()
 
@@ -10,11 +11,11 @@ class Question(db.Model, FlaskSerializeMixin):
     id = db.Column(db.Integer, primary_key=True)
     wording = db.Column(db.Text, nullable=False)
     code = db.Column(db.Text, nullable=False, unique=True)
-    answer_type = db.Column(db.Integer, nullable=False, server_default='1', default='1')
+    answer_type = db.Column(db.Integer, nullable=False, server_default=str(QuestionTypesEnum.OPEN['code']), default=str(QuestionTypesEnum.OPEN['code']))
     created_at = db.Column(db.DateTime, onupdate=db.func.now(), server_default=db.func.now(), default=db.func.now())
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), default=db.func.now())
 
-    create_fields = update_fields = ['wording', 'code']
+    create_fields = update_fields = ['wording', 'code', 'answer_type']
 
     def __repr__(self):
         return f'<Question: {self.wording}>'
@@ -56,4 +57,4 @@ class Quiz(db.Model, FlaskSerializeMixin):
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), default=db.func.now())
 
     def __repr__(self):
-        return f'<Quiz: {self.title}> '
+        return f'<Quiz: {self.title}>'
